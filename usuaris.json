@@ -1,0 +1,8 @@
+[
+    {
+        "username": "admin",
+        "password": "$2y$10$V8R.qjWjUeXOhOVPSe1Uhe1zWvO4XxhPRZG8QoPfpT8fZ/1/Ff39K", 
+        "email": "admin@fjeclot.net",
+        "role": "admin"
+    }
+]
