@@ -30,6 +30,19 @@ function eliminarUsuari($username) {
     echo "Usuari no trobat!";
 }
 
+
+
+function obtenirUsuari($userId) {
+    $usuaris = carregarUsuaris();
+    foreach ($usuaris as $usuari) {
+        if ($usuari['username'] === $userId) {
+            return $usuari;
+        }
+    }
+    return null; // If the user is not found, return null
+}
+
+
 function validarUsuari($username, $password) {
     $usuaris = carregarUsuaris();
     echo password_hash('FjeClot2425#', PASSWORD_BCRYPT);
@@ -48,23 +61,134 @@ function validarUsuari($username, $password) {
 
 
 function afegirUsuari($dadesUsuari) {
-    $usuaris = carregarUsuaris(); // Load existing users
+    // Comprobar si la contraseña cumple con los requisitos de seguridad
+    if (!preg_match('/[A-Z]/', $dadesUsuari['password']) || !preg_match('/\d/', $dadesUsuari['password']) || !preg_match('/[^\w]/', $dadesUsuari['password'])) {
+        echo "La contrasenya ha de tenir almenys una lletra majúscula, un número i un caràcter especial.";
+        return;
+    }
 
-    // Check if the username already exists
+    $usuaris = carregarUsuaris(); // Cargar usuarios existentes
+
+    // Comprobar si el nombre de usuario ya existe
     foreach ($usuaris as $usuari) {
         if ($usuari['username'] === $dadesUsuari['username']) {
-            // If the username already exists, return an error or handle the duplication
             echo "Error: Ja existeix un usuari amb aquest nom d'usuari.";
-            return; // Exit the function if the username is found
+            return;
         }
     }
 
-    // If the username is unique, add the new user
+    // Añadir el nuevo usuario
     $usuaris[] = $dadesUsuari;
-
-    // Save the updated list of users to usuaris.json
-    guardarUsuaris($usuaris);
+    guardarUsuaris($usuaris); // Guardar la lista actualizada
 }
+
+function editarUsuari($username, $dadesActualitzades) {
+    $usuaris = carregarUsuaris();
+
+    // Buscar y actualizar los datos
+    foreach ($usuaris as $key => $usuari) {
+        if ($usuari['username'] === $username) {
+            // Validar nueva contraseña
+            if (!preg_match('/[A-Z]/', $dadesActualitzades['password']) || !preg_match('/\d/', $dadesActualitzades['password']) || !preg_match('/[^\w]/', $dadesActualitzades['password'])) {
+                echo "La contrasenya ha de tenir almenys una lletra majúscula, un número i un caràcter especial.";
+                return;
+            }
+
+            // Actualizar los datos del usuario
+            $usuaris[$key]['username'] = $dadesActualitzades['username'];
+            $usuaris[$key]['password'] = $dadesActualitzades['password']; // Encriptar la nueva contraseña
+            $usuaris[$key]['email'] = $dadesActualitzades['email'];
+
+            guardarUsuaris($usuaris); // Guardar la lista actualizada
+            return;
+        }
+    }
+
+    echo "Usuari no trobat!";
+}
+
+function editarClient($username, $dadesActualitzades) {
+    // Carregar clients des del fitxer o base de dades
+    $clients = carregarUsuaris(); // Load the clients data (you should create this function)
+
+    // Buscar y actualizar los datos
+    foreach ($clients as $key => $client) {
+        if ($client['username'] === $username) {
+            // Validar nueva contrasenya si está presente
+            if (isset($dadesActualitzades['password']) && !empty($dadesActualitzades['password'])) {
+                if (!preg_match('/[A-Z]/', $dadesActualitzades['password']) || 
+                    !preg_match('/\d/', $dadesActualitzades['password']) || 
+                    !preg_match('/[^\w]/', $dadesActualitzades['password'])) {
+                    echo "La contrasenya ha de tenir almenys una lletra majúscula, un número i un caràcter especial.";
+                    return;
+                }
+                // Actualizar contrasenya (encriptar)
+                $dadesActualitzades['password'] = password_hash($dadesActualitzades['password'], PASSWORD_BCRYPT);
+            } else {
+                // Si no se proporciona nueva contraseña, mantenemos la original
+                $dadesActualitzades['password'] = $client['password'];
+            }
+
+            // Actualitzar altres dades del client
+            $clients[$key]['username'] = $dadesActualitzades['username'];
+            $clients[$key]['password'] = $dadesActualitzades['password'];
+            $clients[$key]['email'] = $dadesActualitzades['email'];
+
+            $clients[$key]['telefon'] = $dadesActualitzades['telefon'];
+            $clients[$key]['adreca'] = $dadesActualitzades['adreca']; // Address
+            $clients[$key]['visa'] = $dadesActualitzades['visa']; // Visa number
+            $clients[$key]['gestor'] = $dadesActualitzades['gestor']; // Gestor assigned
+
+            // Guardar els canvis
+            guardarUsuaris($clients); // Save the updated client list
+            echo "Client actualitzat correctament!";
+            return;
+        }
+    }
+
+    echo "Client no trobat!";
+}
+
+function editarGestor($username, $dadesActualitzades) {
+    // Carregar gestors des del fitxer o base de dades
+    $gestors = carregarUsuaris(); // Load the gestor data (you should create this function)
+
+    // Buscar y actualizar los datos
+    foreach ($gestors as $key => $gestor) {
+        if ($gestor['username'] === $username) {
+            // Validar nova contrasenya si està present
+            if (isset($dadesActualitzades['password']) && !empty($dadesActualitzades['password'])) {
+                if (!preg_match('/[A-Z]/', $dadesActualitzades['password']) || 
+                    !preg_match('/\d/', $dadesActualitzades['password']) || 
+                    !preg_match('/[^\w]/', $dadesActualitzades['password'])) {
+                    echo "La contrasenya ha de tenir almenys una lletra majúscula, un número i un caràcter especial.";
+                    return;
+                }
+                // Actualitzar contrasenya (encriptar)
+                $dadesActualitzades['password'] = password_hash($dadesActualitzades['password'], PASSWORD_BCRYPT);
+            } else {
+                // Si no se proporciona nueva contraseña, mantenemos la original
+                $dadesActualitzades['password'] = $gestor['password'];
+            }
+
+            // Actualitzar altres dades del gestor
+            $gestors[$key]['username'] = $dadesActualitzades['username'];
+            $gestors[$key]['password'] = $dadesActualitzades['password'];
+            $gestors[$key]['email'] = $dadesActualitzades['email'];
+           
+            $gestors[$key]['telefon'] = isset($dadesActualitzades['telefon']) ? $dadesActualitzades['telefon'] : $gestor['telefon']; // Optional
+
+            // Guardar els canvis
+            guardarUsuaris($gestors); // Save the updated gestor list
+            echo "Gestor actualitzat correctament!";
+            return;
+        }
+    }
+
+    echo "Gestor no trobat!";
+}
+
+
 
 function obtenirUsuarisPerRol($role) {
     return array_filter(carregarUsuaris(), function($usuari) use ($role) {

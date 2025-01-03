@@ -1,14 +1,67 @@
 [
     {
         "username": "admin",
-        "password": "$2y$10$ALNWX9H9uNP8Xd5ws9OclO.b8FRKKOCXBFKKkqEEDRWNNJtOWpybK",
-        "email": "admin@fjeclot.net",
+        "password": "$2y$10$kIt7CLRzBwCyDwvNF1ui0OYKA332arzj4Kf9wzA2eqpwKMacAaIeC",
+        "email": "admin2@fjeclot.net",
         "role": "admin"
     },
     {
-        "username": "rele",
-        "password": "$2y$10$Wz2bn5uJH1Ko1\/g8oM59uO2KlMV5LxlyIi.l.yOFEn0zgIso2CTkG",
+        "username": "214124111111111111111111111111111111111111111",
+        "idnentificador": "421412",
+        "password": "$2y$10$laFT5efaDUEiPpy3X9fFseAAJwnoELX.YIkrmJbTQ6bKhJup8r9EG",
         "role": "gestor",
-        "email": "mar@wqurq.f"
+        "email": "crieraamatriain@gmail.com",
+        "nom": "Cesc Riera Amatriain",
+        "cognoms": "325235",
+        "telefon": "644748764"
+    },
+    {
+        "username": "4324324",
+        "idnentificador": "2342342",
+        "password": "$2y$10$KI36g9B\/\/ZouX5tTu1acJ.nvmdIK6s0XGfseRb5z0XdfioBMudPlO",
+        "role": "client",
+        "email": "23423423432@gmail.com",
+        "nom": "3242342",
+        "cognoms": "42423",
+        "telefon": "42424",
+        "adreca": "234234",
+        "visa": "234234234243",
+        "gestor": "214124111111111111111111111111111111111111111"
+    },
+    {
+        "username": "42342424",
+        "idnentificador": "2342424",
+        "password": "$2y$10$ptXYRSl25Q3Grwda4mIjJOJkPMg5idJq5gWI1vVebD\/PZQuC7\/qsa",
+        "role": "client",
+        "email": "42424@g.com",
+        "nom": "2424",
+        "cognoms": "24242",
+        "telefon": "424324",
+        "adreca": "32423",
+        "visa": "424242424",
+        "gestor": "214124111111111111111111111111111111111111111"
+    },
+    {
+        "username": "cesc123",
+        "idnentificador": "123",
+        "password": "$2y$10$jBcXOrEoWAfj8g9JOlitQuiInIEesihQfFj979slTge458U6Blxqi",
+        "role": "gestor",
+        "email": "crieraamatriain@gmail.com",
+        "nom": "Cesc Riera Amatriain",
+        "cognoms": "aqwrqwr",
+        "telefon": "644748764"
+    },
+    {
+        "username": "Didacx gordi",
+        "idnentificador": "23423423",
+        "password": "$2y$10$YdO2O4TbtEHq6ASZdUhz..MNmwFhPRO4whuVRGmMtw9qXynv2ONfq",
+        "role": "client",
+        "email": "324234234@gmail.com",
+        "nom": "344324324",
+        "cognoms": "234234234",
+        "telefon": "2432342342",
+        "adreca": "213124",
+        "visa": "1414214",
+        "gestor": "cesc123"
     }
 ]
