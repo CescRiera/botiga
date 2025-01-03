@@ -63,5 +63,15 @@
         "adreca": "qwrwq",
         "visa": "wrqwrqrwq",
         "gestor": "cesc123"
+    },
+    {
+        "username": "didac",
+        "idnentificador": "123",
+        "password": "$2y$10$bR0dcD1MJPrKjGQ8XIOUH.3xipc3wWZuXsiPwUyXq3hd1cpIFHAKW",
+        "role": "gestor",
+        "email": "didac@gmail.com",
+        "nom": "Didac",
+        "cognoms": "Garcia",
+        "telefon": "123123213"
     }
 ]
