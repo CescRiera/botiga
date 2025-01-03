@@ -158,7 +158,8 @@ if (isset($_POST['generate_pdf'])) {
         <form method="POST">
             <input type="hidden" name="admin_id" value="<?php echo $admins[0]['username']; ?>">
             <label>Nom d'usuari: <input type="text" name="username" value="<?php echo htmlspecialchars($admins[0]['username']); ?>" required></label>
-            <label>Contrasenya: <input type="password" name="password" required></label>
+            <label>Contrasenya: <input type="password" name="password" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}" 
+            title="Password must be at least 8 characters, include an uppercase letter, a lowercase letter, a number, and a special character." required></label>
             <label>Correu electrònic: <input type="email" name="email" value="<?php echo htmlspecialchars($admins[0]['email']); ?>" required></label>
             <button type="submit" name="edit_admin">Guardar canvis</button>
         </form>
@@ -170,7 +171,8 @@ if (isset($_POST['generate_pdf'])) {
         <label>Nom d'usuari: <input type="text" name="username" required></label>
         <label>Identificador Numeric: <input type="text" name="identificador" required></label>
 
-        <label>Contrasenya: <input type="password" name="password" required></label>
+        <label>Contrasenya: <input type="password" name="password" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}" 
+        title="Password must be at least 8 characters, include an uppercase letter, a lowercase letter, a number, and a special character." required></label>
         <label>Correu electrònic: <input type="email" name="email" required></label>
         <label>Nom: <input type="text" name="nom" required></label>
         <label>Cognoms: <input type="text" name="cognoms" required></label>
@@ -235,7 +237,8 @@ if (isset($_POST['generate_pdf'])) {
                     <input type="hidden" name="admin_id" value="<?php echo $client['username']; ?>">
 
                     <label>Nom d'usuari: <input type="text" name="username" value="<?php echo htmlspecialchars($client['username']); ?>" required></label>
-                    <label>Contrasenya: <input type="password" name="password" required></label>
+                    <label>Contrasenya: <input type="password" name="password" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}" 
+                    title="Password must be at least 8 characters, include an uppercase letter, a lowercase letter, a number, and a special character."required></label>
                     
                     
                     <label>Correu electrònic: <input type="email" name="email" value="<?php echo htmlspecialchars($client['email']); ?>" required></label>
@@ -277,7 +280,8 @@ if (isset($_POST['generate_pdf'])) {
                     <input type="hidden" name="admin_id" value="<?php echo $gestor['username']; ?>">
 
                     <label>Nom d'usuari: <input type="text" name="username" value="<?php echo htmlspecialchars($gestor['username']); ?>" required></label>
-                    <label>Contrasenya: <input type="password" name="password" required></label>
+                    <label>Contrasenya: <input type="password" name="password" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}" 
+                    title="Password must be at least 8 characters, include an uppercase letter, a lowercase letter, a number, and a special character."required></label>
                     <label>Correu electrònic: <input type="email" name="email" value="<?php echo htmlspecialchars($gestor['email']); ?>" required></label>
                     <label>Telèfon: <input type="text" name="telefon" value="<?php echo htmlspecialchars($gestor['telefon']); ?>" required></label>
 
