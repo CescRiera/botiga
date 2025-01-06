@@ -11,7 +11,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'gestor') {
 
 // Obtener el gestor actual
 $gestorUsername = $_SESSION['username']; // El nombre de usuario del gestor actual
-    
+
 
 // Obtener todos los usuarios con rol "client"
 $clients = obtenirUsuarisPerRol('client');
@@ -125,13 +125,49 @@ usort($productosOrdenados, function ($a, $b) {
     <h2>Enviar Petició a l'Administrador</h2>
     <form method="POST" action="send_request_to_admin.php">
         <label for="subject">Assumpte:</label>
-        <input type="text" id="subject" name="subject" value="Petició d'addició/modificació/esborrament de client" required><br><br>
+        <input type="hidden" id="subject" name="subject" value="Peticio de addicio/modificacio/esborrament de client"> <p>Peticio de addicio/modificacio/esborrament de client</p>
         
         <label for="message">Missatge:</label><br>
         <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
 
         <button type="submit" name="send_request">Enviar Petició</button>
     </form>
+
+    <h2>Rebutjar Comanda</h2>
+    <form method="POST" action="send_request_to_client.php">
+        <label for="subject">Assumpte: Rebutjar Comanda</label>
+        <input type="hidden" id="subject" name="subject" value="Rebutjar Comanda">
+        
+        <label for="message">Missatge:</label><br>
+        <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
+
+        <button type="submit" name="send_request">Rebutjar Comanda</button>
+    </form>
+
+    <h2>Tramitar Comanda</h2>
+    <form method="POST" action="send_request_to_client.php">
+        <label for="subject">Assumpte: Tramitar Comanda</label>
+        <input type="hidden" id="subject" name="subject" value="Tramitar Comanda">
+        
+        <label for="message">Missatge:</label><br>
+        <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
+
+        <button type="submit" name="send_request">Tramitar Comanda</button>
+    </form>
+
+    <h2>Finalitzar la comanda</h2>
+    <form method="POST" action="send_request_to_client.php">
+        <label for="subject">Assumpte: Finalitzar la comanda</label>
+        <input type="hidden" id="subject" name="subject" value="Finalitzar la comanda">
+        
+        <label for="message">Missatge:</label><br>
+        <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
+
+        <button type="submit" name="send_request">Finalitzar Comanda</button>
+    </form>
+
+
+    
 
     <!-- Secció per crear productes -->
     <h2>Crear Producte</h2>

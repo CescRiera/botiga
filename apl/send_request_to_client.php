@@ -13,7 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_request'])) {
     $gestor = isset($_SESSION['username']) ? $_SESSION['username'] : 'Gestor desconegut';
     $gestorcorreu = isset($_SESSION['email']) ? $_SESSION['email'] : 'Correu de gestor desconegut';
 
-
     // Configurar PHPMailer
     $mail = new PHPMailer(true);
 
@@ -40,13 +39,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_request'])) {
         // Enviar el correo
         $mail->send();
         echo "<p style='color: green;'>El correu s'ha enviat correctament.</p>";
-        header("Location: dashboard_gestor.php"); // Redirigir si se accede de manera incorrecta
-    exit();
+
+        // Enviar el mensaje de Telegram
+        $telegramBotToken = '7930893797:AAEp4VVaSDKozxvXcuq51uRXn8q9cmvItZo';  // Tu token de bot
+        $telegramChatId = '6477112490';  // Tu chat ID
+        $telegramMessage = "Missatge del Gestor: $gestor amb correu $gestorcorreu\n\n$message";
+
+        $telegramUrl = "https://api.telegram.org/bot$telegramBotToken/sendMessage?chat_id=$telegramChatId&text=" . urlencode($telegramMessage);
+        
+        // Realizar la solicitud para enviar el mensaje
+        file_get_contents($telegramUrl);  // Puedes usar cURL si prefieres
+
+        // Redirigir al panel de gestión
+        header("Location: dashboard_gestor.php");
+        exit();
     } catch (Exception $e) {
         echo "<p style='color: red;'>Error en enviar el correu. Detalls: {$mail->ErrorInfo}</p>";
     }
 } else {
-    echo("Location: panell_gestor.php"); // Redirigir si se accede de manera incorrecta
+    header("Location: panell_gestor.php"); // Redirigir si se accede de manera incorrecta
     exit();
 }
 ?>
