@@ -111,29 +111,46 @@ if (isset($_POST['edit_client'])) {
 if (isset($_POST['generate_pdf'])) {
     $pdf = new FPDF();
     $pdf->AddPage();
-    $pdf->SetFont('Arial', 'B', 12);
 
-    $pdf->Cell(200, 10, "Llista de Gestors i Clients", 0, 1, 'C');
-    
-    // Añadir gestores al PDF
-    $pdf->Cell(50, 10, "Gestors", 0, 1);
+    // Títulos principales
+    $pdf->SetFont('Arial', 'B', 16);
+    $pdf->Cell(0, 10, "Llista de Gestors i Clients", 0, 1, 'C');
+    $pdf->Ln(10);
+
+    // Sección de Gestors
+    $pdf->SetFont('Arial', 'B', 14);
+    $pdf->SetTextColor(0, 0, 255);
+    $pdf->Cell(0, 10, "Gestors", 0, 1, 'L');
+    $pdf->Ln(5);
+
+    $pdf->SetFont('Arial', '', 12);
+    $pdf->SetTextColor(0, 0, 0);
     foreach ($gestors as $gestor) {
-        $pdf->Cell(50, 10, "Usuari: " . $gestor['username'], 0, 1);
-        $pdf->Cell(50, 10, "Correu: " . $gestor['email'], 0, 1);
-        $pdf->Cell(50, 10, "Nom: " . $gestor['nom'] . ' ' . $gestor['cognoms'], 0, 1);
-        $pdf->Cell(50, 10, "Telèfon: " . $gestor['telefon'], 0, 1);
+        $pdf->Cell(0, 10, "Usuari: " . $gestor['username'], 0, 1);
+        $pdf->Cell(0, 10, "Correu: " . $gestor['email'], 0, 1);
+        $pdf->Cell(0, 10, "Nom: " . $gestor['nom'] . ' ' . $gestor['cognoms'], 0, 1);
+        $pdf->Cell(0, 10, "Telèfon: " . $gestor['telefon'], 0, 1);
+        $pdf->Ln(5);
     }
 
-    // Añadir clientes al PDF
-    $pdf->Cell(50, 10, "Clients", 0, 1);
+    // Separación clara entre secciones
+    $pdf->Ln(10);
+    $pdf->SetFont('Arial', 'B', 14);
+    $pdf->SetTextColor(0, 128, 0);
+    $pdf->Cell(0, 10, "Clients", 0, 1, 'L');
+    $pdf->Ln(5);
+
+    $pdf->SetFont('Arial', '', 12);
+    $pdf->SetTextColor(0, 0, 0);
     foreach ($clients as $client) {
-        $pdf->Cell(50, 10, "Usuari: " . $client['username'], 0, 1);
-        $pdf->Cell(50, 10, "Correu: " . $client['email'], 0, 1);
-        $pdf->Cell(50, 10, "Nom: " . $client['nom'] . ' ' . $client['cognoms'], 0, 1);
-        $pdf->Cell(50, 10, "Telèfon: " . $client['telefon'], 0, 1);
-        $pdf->Cell(50, 10, "Adreça: " . $client['adreca'], 0, 1);
-        $pdf->Cell(50, 10, "Visa: " . $client['visa'], 0, 1);
-        $pdf->Cell(50, 10, "Gestor Assignat: " . $client['gestor'], 0, 1);
+        $pdf->Cell(0, 10, "Usuari: " . $client['username'], 0, 1);
+        $pdf->Cell(0, 10, "Correu: " . $client['email'], 0, 1);
+        $pdf->Cell(0, 10, "Nom: " . $client['nom'] . ' ' . $client['cognoms'], 0, 1);
+        $pdf->Cell(0, 10, "Telèfon: " . $client['telefon'], 0, 1);
+        $pdf->Cell(0, 10, "Adreça: " . $client['adreca'], 0, 1);
+        $pdf->Cell(0, 10, "Visa: " . $client['visa'], 0, 1);
+        $pdf->Cell(0, 10, "Gestor Assignat: " . $client['gestor'], 0, 1);
+        $pdf->Ln(5);
     }
 
     // Output del PDF

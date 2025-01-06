@@ -11,6 +11,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'gestor') {
 
 // Obtener el gestor actual
 $gestorUsername = $_SESSION['username']; // El nombre de usuario del gestor actual
+    
 
 // Obtener todos los usuarios con rol "client"
 $clients = obtenirUsuarisPerRol('client');

@@ -2,6 +2,8 @@
 function iniciarSessio($usuari) {
     $_SESSION['username'] = $usuari['username'];
     $_SESSION['role'] = $usuari['role'];
+    $_SESSION['email'] = $usuari['email'];
+
 }
 
 function tancarSessio() {

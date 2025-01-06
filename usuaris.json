@@ -73,5 +73,18 @@
         "nom": "Didac",
         "cognoms": "Garcia",
         "telefon": "123123213"
+    },
+    {
+        "username": "cesc12",
+        "idnentificador": "23423423",
+        "password": "$2y$10$3snKH\/ye2fdXAEyu0qQrDeF9qenPb4qceYRy\/gBd2ohjCDw.DMf7W",
+        "role": "client",
+        "email": "elpepe@gmail.com",
+        "nom": "Cesc Riera Amatriain",
+        "cognoms": "weqrqwrwqr",
+        "telefon": "644748764",
+        "adreca": "q23423423",
+        "visa": "44234234234234",
+        "gestor": "cesc123"
     }
 ]
