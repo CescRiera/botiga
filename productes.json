@@ -5,5 +5,26 @@
         "preu": 12,
         "iva": 15,
         "disponibilitat": "si"
+    },
+    {
+        "nom": "tomateMod2",
+        "id": "422",
+        "preu": 13,
+        "iva": 15,
+        "disponibilitat": "si"
+    },
+    {
+        "nom": "tomateMod3",
+        "id": "423",
+        "preu": 13,
+        "iva": 15,
+        "disponibilitat": "si"
+    },
+    {
+        "nom": "tomateMod4",
+        "id": "424",
+        "preu": 13,
+        "iva": 15,
+        "disponibilitat": "si"
     }
 ]
