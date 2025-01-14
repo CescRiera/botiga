@@ -86,5 +86,18 @@
         "adreca": "q23423423",
         "visa": "44234234234234",
         "gestor": "cesc123"
+    },
+    {
+        "username": "didacClient",
+        "idnentificador": "123",
+        "password": "$2y$10$JNu1YAWrzsVIRgxQJrCF.eco6diaQ3iZjSfOk8A2a.SAPbGP\/8F\/K",
+        "role": "client",
+        "email": "didacgdume@gmail.com",
+        "nom": "D\u00eddac",
+        "cognoms": "Garcia",
+        "telefon": "608128580",
+        "adreca": "08018",
+        "visa": "1231231312",
+        "gestor": "didac"
     }
 ]
