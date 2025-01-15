@@ -3,10 +3,36 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require '../vendor/autoload.php'; // Asegúrate de que PHPMailer esté instalado con Composer
+include 'includes/auth.php';
+
 
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_request'])) {
+
+
+    $username = $_POST['username'];
+    $cestaId = $_POST['cesta_id'];
+    $accion = $_POST['subject'];
+    
+    // Determinar la clave a actualizar según la acción
+    $claveActualizar = null;
+    if ($accion === 'Tramitar Comanda') {
+        $claveActualizar = 'tramitada';
+    } elseif ($accion === 'Finalitzar Comanda') {
+        $claveActualizar = 'finalizada';
+    }
+
+    // Si hay una clave que actualizar
+    if ($claveActualizar) {
+        // Llamar a la función para actualizar el estado de la cesta
+        echo($username);
+        echo($cestaId);
+
+        echo($claveActualizar);
+
+        actualizarEstadoCesta($username, $cestaId, $claveActualizar);
+    }
     // Validar y sanitizar los datos del formulario
     $subject = htmlspecialchars($_POST['subject']);
     $message = htmlspecialchars($_POST['message']);

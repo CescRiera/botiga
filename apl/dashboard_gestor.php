@@ -13,13 +13,20 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'gestor') {
 $gestorUsername = $_SESSION['username']; // El nombre de usuario del gestor actual
 
 
+
 // Obtener todos los usuarios con rol "client"
 $clients = obtenirUsuarisPerRol('client');
+
 
 // Filtrar los clientes que tienen al gestor actual como su gestor asignado
 $clientsDelGestor = array_filter($clients, function($client) use ($gestorUsername) {
     return $client['gestor'] === $gestorUsername;
 });
+
+
+
+
+
 
 // Ruta al archivo JSON
 $rutaArchivo = '../productes.json';
@@ -91,6 +98,22 @@ $productosOrdenados = $productes;
 usort($productosOrdenados, function ($a, $b) {
     return strcmp($a['nom'], $b['nom']);
 });
+
+function mostrarCestas($clientsDelGestor) {
+    foreach ($clientsDelGestor as $client) {
+        $cestas = obtenirCestaPorUsuario($client["username"]); // Call the function
+        
+        echo "Cestas del usuario {$client["username"]}:\n";
+        if (!empty($cestas)) {
+            print_r($cestas); // Print the user's cestas
+        } else {
+            echo "No se encontraron cestas para este usuario.\n";
+        }
+        echo "-----------------------------\n"; // Separator for better readability
+    }
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -99,23 +122,41 @@ usort($productosOrdenados, function ($a, $b) {
     <meta charset="UTF-8">
     <title>Panell de Gestor</title>
     <link rel="stylesheet" href="../css/dashboard_gestor_css.css">
+    <style>
+        .comanda {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script>
+        function toggleComandes() {
+            const comandesContainer = document.getElementById('comandesContainer');
+            comandesContainer.classList.toggle('hidden');
+        }
+    </script>
 </head>
 <body>
-    <h1>Benvingut, <?php echo htmlspecialchars($_SESSION['username']); ?> (Gestor)</h1>
+    <!-- Encabezado principal -->
+    <h1>Benvingut, <?= htmlspecialchars($_SESSION['username']) ?> (Gestor)</h1>
 
     <!-- Llista de Clients del Gestor -->
     <h2>Llista de Clients Assignats</h2>
     <ul>
         <?php foreach ($clientsDelGestor as $client): ?>
-            <li id="client-<?php echo htmlspecialchars($client['username']); ?>">
+            <li id="client-<?= htmlspecialchars($client['username']) ?>">
                 <div class="client-info">
-                    Usuari: <?php echo htmlspecialchars($client['username']); ?><br>
-                    Correu: <?php echo htmlspecialchars($client['email']); ?><br>
-                    Nom: <?php echo htmlspecialchars($client['nom']); ?> <?php echo htmlspecialchars($client['cognoms']); ?><br>
-                    Telèfon: <?php echo htmlspecialchars($client['telefon']); ?><br>
-                    Adreça: <?php echo htmlspecialchars($client['adreca']); ?><br>
-                    Visa: <?php echo htmlspecialchars($client['visa']); ?><br>
-                    Gestor: <?php echo htmlspecialchars($client['gestor']); ?><br>
+                    Usuari: <?= htmlspecialchars($client['username']) ?><br>
+                    Correu: <?= htmlspecialchars($client['email']) ?><br>
+                    Nom: <?= htmlspecialchars($client['nom']) ?> <?= htmlspecialchars($client['cognoms']) ?><br>
+                    Telèfon: <?= htmlspecialchars($client['telefon']) ?><br>
+                    Adreça: <?= htmlspecialchars($client['adreca']) ?><br>
+                    Visa: <?= htmlspecialchars($client['visa']) ?><br>
+                    Gestor: <?= htmlspecialchars($client['gestor']) ?><br>
                 </div>
             </li>
         <?php endforeach; ?>
@@ -125,54 +166,22 @@ usort($productosOrdenados, function ($a, $b) {
     <h2>Enviar Petició a l'Administrador</h2>
     <form method="POST" action="send_request_to_admin.php">
         <label for="subject">Assumpte:</label>
-        <input type="hidden" id="subject" name="subject" value="Peticio de addicio/modificacio/esborrament de client"> <p>Peticio de addicio/modificacio/esborrament de client</p>
-        
+        <input type="hidden" id="subject" name="subject" value="Peticio de addicio/modificacio/esborrament de client">
+        <p>Peticio de addicio/modificacio/esborrament de client</p>
+
         <label for="message">Missatge:</label><br>
         <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
 
         <button type="submit" name="send_request">Enviar Petició</button>
     </form>
 
-    <h2>Rebutjar Comanda</h2>
-    <form method="POST" action="send_request_to_client.php">
-        <label for="subject">Assumpte: Rebutjar Comanda</label>
-        <input type="hidden" id="subject" name="subject" value="Rebutjar Comanda">
-        
-        <label for="message">Missatge:</label><br>
-        <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
+    <!-- Gestió de Comandes -->
+   
 
-        <button type="submit" name="send_request">Rebutjar Comanda</button>
-    </form>
-
-    <h2>Tramitar Comanda</h2>
-    <form method="POST" action="send_request_to_client.php">
-        <label for="subject">Assumpte: Tramitar Comanda</label>
-        <input type="hidden" id="subject" name="subject" value="Tramitar Comanda">
-        
-        <label for="message">Missatge:</label><br>
-        <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
-
-        <button type="submit" name="send_request">Tramitar Comanda</button>
-    </form>
-
-    <h2>Finalitzar la comanda</h2>
-    <form method="POST" action="send_request_to_client.php">
-        <label for="subject">Assumpte: Finalitzar la comanda</label>
-        <input type="hidden" id="subject" name="subject" value="Finalitzar la comanda">
-        
-        <label for="message">Missatge:</label><br>
-        <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
-
-        <button type="submit" name="send_request">Finalitzar Comanda</button>
-    </form>
-
-
-    
-
-    <!-- Secció per crear productes -->
+    <!-- Crear Producte -->
     <h2>Crear Producte</h2>
     <?php if (isset($mensajeExito)): ?>
-        <p style="color: green;"> <?php echo $mensajeExito; ?> </p>
+        <p style="color: green;"> <?= htmlspecialchars($mensajeExito) ?> </p>
     <?php endif; ?>
     <form method="POST">
         <label for="nom_producte">Nom del Producte:</label>
@@ -193,7 +202,7 @@ usort($productosOrdenados, function ($a, $b) {
         <button type="submit" name="crear_producte">Crear Producte</button>
     </form>
 
-    <!-- Secció per editar productes -->
+    <!-- Editar Producte -->
     <h2>Editar Producte</h2>
     <form method="POST">
         <label for="id_producte">Número Identificador del Producte a Editar:</label>
@@ -214,7 +223,7 @@ usort($productosOrdenados, function ($a, $b) {
         <button type="submit" name="editar_producte">Editar Producte</button>
     </form>
 
-    <!-- Secció per eliminar productes -->
+    <!-- Eliminar Producte -->
     <h2>Eliminar Producte</h2>
     <form method="POST">
         <label for="id_producte">Número Identificador del Producte a Eliminar:</label>
@@ -223,7 +232,7 @@ usort($productosOrdenados, function ($a, $b) {
         <button type="submit" name="eliminar_producte">Eliminar Producte</button>
     </form>
 
-    <!-- Secció per llistar productes -->
+    <!-- Llistar Productes -->
     <h2>Llistar Productes</h2>
     <button onclick="document.getElementById('llista-productes').style.display='block';">Mostrar Llista de Productes</button>
     <div id="llista-productes" style="display:none; margin-top: 20px;">
@@ -233,16 +242,71 @@ usort($productosOrdenados, function ($a, $b) {
         <?php else: ?>
             <?php foreach ($productosOrdenados as $producte): ?>
                 <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-                    <strong>Nom:</strong> <?php echo htmlspecialchars($producte['nom']); ?><br>
-                    <strong>ID:</strong> <?php echo htmlspecialchars($producte['id']); ?><br>
-                    <strong>Preu:</strong> <?php echo htmlspecialchars(number_format($producte['preu'], 2)); ?>€<br>
-                    <strong>IVA:</strong> <?php echo htmlspecialchars(number_format($producte['iva'], 2)); ?>%<br>
-                    <strong>Disponibilitat:</strong> <?php echo htmlspecialchars($producte['disponibilitat']); ?><br>
+                    <strong>Nom:</strong> <?= htmlspecialchars($producte['nom']) ?><br>
+                    <strong>ID:</strong> <?= htmlspecialchars($producte['id']) ?><br>
+                    <strong>Preu:</strong> <?= htmlspecialchars(number_format($producte['preu'], 2)) ?>€<br>
+                    <strong>IVA:</strong> <?= htmlspecialchars(number_format($producte['iva'], 2)) ?>%<br>
+                    <strong>Disponibilitat:</strong> <?= htmlspecialchars($producte['disponibilitat']) ?><br>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
 
+    
+
     <p><a href="logout.php">Tancar Sessió</a></p>
+
+    <h1>Gestió de Comandes</h1>
+<button onclick="toggleComandes()">Mostrar/Amagar Comandes</button>
+<div id="comandesContainer" class="hidden">
+    <?php foreach ($clientsDelGestor as $client): ?>
+        <?php 
+        // Fetch cestas for the current user
+        $cestas = obtenirCestaPorUsuario($client["username"]); 
+        ?>
+
+        <div class="comanda">
+            <h2>Comandes del usuario: <?= htmlspecialchars($client["username"]) ?></h2>
+
+            <?php if (!empty($cestas)): ?>
+
+                <?php foreach ($cestas as $cesta): ?>
+                    
+                    <h3>Comanda ID: <?= htmlspecialchars($cesta["id"]) ?></h3>
+                    <h3>Comanda Tramitada? <?= htmlspecialchars($cesta["tramitada"] ? "Sí" : "No") ?></h3>
+                    <h3>Comanda Finalitzada? <?= htmlspecialchars($cesta["tramitada"] ? "Sí" : "No") ?> Quan es finalitzi la comanda ja no apareixera</h3>
+                    
+
+                    <ul>
+                        <?php foreach ($cesta["productos"] as $producto): ?>
+                            <li>
+                                <?= htmlspecialchars($producto["nombre"]) ?> 
+                                (Cantidad: <?= htmlspecialchars($producto["cantidad"]) ?>)
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <p><strong>Total:</strong> <?= htmlspecialchars($cesta["total"]) ?> €</p>
+                    <hr>
+                <?php endforeach; ?>
+
+                <?php foreach (['Rebutjar', 'Tramitar', 'Finalitzar'] as $accio): ?>
+    <form method="POST" action="send_request_to_client.php">
+        <label for="message_<?= htmlspecialchars($client["username"]) ?>_<?= htmlspecialchars($accio) ?>">Missatge:</label><br>
+        <textarea id="message_<?= htmlspecialchars($client["username"]) ?>_<?= htmlspecialchars($accio) ?>" name="message" rows="4" cols="50" required></textarea><br><br>
+        <input type="hidden" name="subject" value="<?= htmlspecialchars($accio) ?> Comanda">
+        <input type="hidden" name="username" value="<?= htmlspecialchars($client["username"]) ?>">
+        <input type="hidden" name="cesta_id" value="<?= htmlspecialchars($cesta["id"]) ?>"> <!-- Agregamos el ID de la cesta -->
+        <button type="submit" name="send_request"><?= htmlspecialchars($accio) ?> Comanda</button>
+    </form><br>
+<?php endforeach; ?>
+
+            <?php else: ?>
+                <p>No se encontraron cestas para este usuario.</p>
+            <?php endif; ?>
+        </div>
+    <?php endforeach; ?>
+</div>
+
 </body>
+
 </html>

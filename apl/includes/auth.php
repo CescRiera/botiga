@@ -195,4 +195,71 @@ function obtenirUsuarisPerRol($role) {
         return $usuari['role'] === $role;
     });
 }
+
+function carregarCesta() {
+    return json_decode(file_get_contents(__DIR__ . '/../../comandas.json'), true);
+}
+
+function guardarCesta($cesta) {
+    file_put_contents(__DIR__ . '/../../comandas.json', json_encode($cesta, JSON_PRETTY_PRINT));
+}
+
+function obtenirCestaPorUsuario($username) {
+    // Cargar todas las cestas desde el archivo comandas.json
+    $cestas = carregarCesta();
+    
+    // Filtrar cestas por el atributo 'usuario'
+    $cestasUsuario = array_filter($cestas, function($cesta) use ($username) {
+        return isset($cesta['usuario']) && $cesta['usuario'] === $username;
+    });
+
+    // Retornar las cestas del usuario
+    return $cestasUsuario;
+}
+
+function actualizarEstadoCesta($username, $idCesta, $clave) {
+    // Cargar todas las cestas
+    $cestas = carregarCesta();
+
+    // Verificar si se cargaron correctamente las cestas
+    if (!is_array($cestas)) {
+        throw new Exception('Error al cargar las cestas. Verifica el archivo comandas.json.');
+    }
+
+    // Bandera para confirmar si se realizó la actualización
+    $actualizado = false;
+
+    // Recorrer las cestas y buscar coincidencias
+    foreach ($cestas as &$cesta) {
+        // Mostrar la cesta para depuración
+        error_log("Verificando cesta: " . print_r($cesta, true));
+
+        // Comparar usuario e ID de la cesta
+        if (
+            isset($cesta['usuario'], $cesta['id']) &&
+            $cesta['usuario'] === $username &&
+            (string)$cesta['id'] === (string)$idCesta
+        ) {
+            // Verificar si la clave existe y su valor es False
+            if (isset($cesta[$clave]) && $cesta[$clave] === false) {
+                // Cambiar el valor de la clave a True
+                $cesta[$clave] = true;
+                $actualizado = true;
+                break; // Salir del bucle una vez encontrada la cesta
+            } else {
+                throw new Exception("La clave '{$clave}' ya está en True o no existe.");
+            }
+        }
+    }
+
+    // Guardar las cestas actualizadas solo si se realizó un cambio
+    if ($actualizado) {
+        guardarCesta($cestas);
+    } else {
+        throw new Exception("No se encontró la cesta con usuario '{$username}' y ID '{$idCesta}', o no había nada que actualizar.");
+    }
+}
+
+
+
 ?>
