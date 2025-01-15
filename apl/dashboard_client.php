@@ -72,14 +72,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['quantitats'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     if ($_POST['action'] === 'confirm_purchase') {
         $message = "Compra confirmada! Gràcies per la teva compra.";
-        $_SESSION['cistella'] = []; 
-        unlink($jsonFilePath); 
+        // Crear el arxiu a la carpeta comandes
+        $comandesDir = '../comandes';
+        if (!is_dir($comandesDir)) {
+            mkdir($comandesDir, 0755, true);
+        }
+
+        $comandaData = [
+            'username' => $currentClientUsername,
+            'fecha' => $fecha,
+            'preuSenseIVA' => $preuSenseIVA,
+            'valorIVA' => $valorIVA,
+            'totalPreu' => $totalPreu,
+            'productes' => $cistella,
+            'tramitada' => false,
+            'finalizada' => false,
+        ];
+
+        $comandaFilePath = "$comandesDir/{$currentClientUsername}.json";
+        file_put_contents($comandaFilePath, json_encode($comandaData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
     } elseif ($_POST['action'] === 'show_confirmation') {
         $showConfirmation = true;
     }
 }
-
-
 ?>
 
 <!DOCTYPE html>
