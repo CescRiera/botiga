@@ -101,7 +101,7 @@ usort($productosOrdenados, function ($a, $b) {
 
 function mostrarCestas($clientsDelGestor) {
     foreach ($clientsDelGestor as $client) {
-        $cestas = obtenirCestaPorUsuario($client["username"]); // Call the function
+        $cestas = obtenerComandaPorUsuario($client["username"]); // Call the function
         
         echo "Cestas del usuario {$client["username"]}:\n";
         if (!empty($cestas)) {
@@ -262,15 +262,14 @@ function mostrarCestas($clientsDelGestor) {
     <?php foreach ($clientsDelGestor as $client): ?>
         <?php 
         // Fetch cestas for the current user
-        $cestas = obtenirCestaPorUsuario($client["username"]); 
+        $cesta = obtenerComandaPorUsuario($client["username"]); 
         ?>
 
         <div class="comanda">
             <h2>Comandes del usuario: <?= htmlspecialchars($client["username"]) ?></h2>
 
-            <?php if (!empty($cestas)): ?>
+            <?php if (!empty($cesta)): ?>
 
-                <?php foreach ($cestas as $cesta): ?>
                     
                     <h3>Comanda ID: <?= htmlspecialchars($cesta["id"]) ?></h3>
                     <h3>Comanda Tramitada? <?= htmlspecialchars($cesta["tramitada"] ? "Sí" : "No") ?></h3>
@@ -287,7 +286,6 @@ function mostrarCestas($clientsDelGestor) {
                     </ul>
                     <p><strong>Total:</strong> <?= htmlspecialchars($cesta["total"]) ?> €</p>
                     <hr>
-                <?php endforeach; ?>
 
                 <?php foreach (['Rebutjar', 'Tramitar', 'Finalitzar'] as $accio): ?>
     <form method="POST" action="send_request_to_client.php">

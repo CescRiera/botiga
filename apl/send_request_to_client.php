@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_request'])) {
 
         echo($claveActualizar);
 
-        actualizarEstadoCesta($username, $cestaId, $claveActualizar);
+        actualizarEstadoComanda($username, $cestaId, $claveActualizar);
     }
     // Validar y sanitizar los datos del formulario
     $subject = htmlspecialchars($_POST['subject']);

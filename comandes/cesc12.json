@@ -1,0 +1,14 @@
+{
+    "id": "2",
+    "usuario": "cesc12",
+    "tramitada": true,
+    "finalizada": false,
+    "productos": [
+        {
+            "id": "prod3",
+            "nombre": "Producto 3",
+            "cantidad": 1
+        }
+    ],
+    "total": 10
+}

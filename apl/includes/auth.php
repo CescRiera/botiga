@@ -196,69 +196,53 @@ function obtenirUsuarisPerRol($role) {
     });
 }
 
-function carregarCesta() {
-    return json_decode(file_get_contents(__DIR__ . '/../../comandas.json'), true);
-}
-
-function guardarCesta($cesta) {
-    file_put_contents(__DIR__ . '/../../comandas.json', json_encode($cesta, JSON_PRETTY_PRINT));
-}
-
-function obtenirCestaPorUsuario($username) {
-    // Cargar todas las cestas desde el archivo comandas.json
-    $cestas = carregarCesta();
+function cargarComanda($username) {
+    $filePath = __DIR__ . "/../../comandes/{$username}.json";
     
-    // Filtrar cestas por el atributo 'usuario'
-    $cestasUsuario = array_filter($cestas, function($cesta) use ($username) {
-        return isset($cesta['usuario']) && $cesta['usuario'] === $username;
-    });
+    if (!file_exists($filePath)) {
+        // Informar que no existe el archivo y salir de la función
+        echo "El usuario '{$username}' no tiene ninguna comanda activa.";
+        return null; // Retornar null para indicar que no hay comanda
+    }
+    
+    $comanda = json_decode(file_get_contents($filePath), true);
 
-    // Retornar las cestas del usuario
-    return $cestasUsuario;
-}
-
-function actualizarEstadoCesta($username, $idCesta, $clave) {
-    // Cargar todas las cestas
-    $cestas = carregarCesta();
-
-    // Verificar si se cargaron correctamente las cestas
-    if (!is_array($cestas)) {
-        throw new Exception('Error al cargar las cestas. Verifica el archivo comandas.json.');
+    if (!is_array($comanda)) {
+        throw new Exception("El archivo de la comanda para el usuario '{$username}' tiene un formato inválido.");
     }
 
-    // Bandera para confirmar si se realizó la actualización
-    $actualizado = false;
+    return $comanda;
+}
 
-    // Recorrer las cestas y buscar coincidencias
-    foreach ($cestas as &$cesta) {
-        // Mostrar la cesta para depuración
-        error_log("Verificando cesta: " . print_r($cesta, true));
 
-        // Comparar usuario e ID de la cesta
-        if (
-            isset($cesta['usuario'], $cesta['id']) &&
-            $cesta['usuario'] === $username &&
-            (string)$cesta['id'] === (string)$idCesta
-        ) {
-            // Verificar si la clave existe y su valor es False
-            if (isset($cesta[$clave]) && $cesta[$clave] === false) {
-                // Cambiar el valor de la clave a True
-                $cesta[$clave] = true;
-                $actualizado = true;
-                break; // Salir del bucle una vez encontrada la cesta
-            } else {
-                throw new Exception("La clave '{$clave}' ya está en True o no existe.");
-            }
+function guardarComanda($username, $comanda) {
+    $filePath = __DIR__ . "/../../comandes/{$username}.json";
+    file_put_contents($filePath, json_encode($comanda, JSON_PRETTY_PRINT));
+}
+
+function actualizarEstadoComanda($username, $idComanda, $clave) {
+    // Cargar la comanda del usuario
+    $comanda = cargarComanda($username);
+
+    // Verificar si la ID coincide
+    if (isset($comanda['id']) && (string)$comanda['id'] === (string)$idComanda) {
+        // Verificar si la clave existe y está en False
+        if (isset($comanda[$clave]) && $comanda[$clave] === false) {
+            // Actualizar la clave a True
+            $comanda[$clave] = true;
+            guardarComanda($username, $comanda);
+        } else {
+            throw new Exception("La clave '{$clave}' ya está en True o no existe en la comanda.");
         }
-    }
-
-    // Guardar las cestas actualizadas solo si se realizó un cambio
-    if ($actualizado) {
-        guardarCesta($cestas);
     } else {
-        throw new Exception("No se encontró la cesta con usuario '{$username}' y ID '{$idCesta}', o no había nada que actualizar.");
+        throw new Exception("No se encontró una comanda con ID '{$idComanda}' para el usuario '{$username}'.");
     }
 }
+
+function obtenerComandaPorUsuario($username) {
+    return cargarComanda($username);
+}
+
 
 
 
