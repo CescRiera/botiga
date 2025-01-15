@@ -16,9 +16,10 @@ $cistella = [];
 $preuSenseIVA = 0.00;
 $valorIVA = 0.00;
 $totalPreu = 0.00;
-$fecha = date("Y-m-d H:i");
-
+$fecha = date("Y-m-d H:i"); 
 $cistellesDir = '../cistelles';
+$cistellaId = uniqid('cistella_', true); 
+
 if ($currentClientUsername && is_dir($cistellesDir)) {
     $jsonFilePath = "$cistellesDir/{$currentClientUsername}.json";
     if (file_exists($jsonFilePath)) {
@@ -52,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['quantitats'])) {
 
     if ($currentClientUsername && !empty($cistella)) {
         $cistellaData = [
+            'id' => $cistellaId, 
             'username' => $currentClientUsername,
             'fecha' => $fecha,
             'preuSenseIVA' => $preuSenseIVA,
@@ -72,13 +74,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['quantitats'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     if ($_POST['action'] === 'confirm_purchase') {
         $message = "Compra confirmada! Gràcies per la teva compra.";
-        // Crear el arxiu a la carpeta comandes
         $comandesDir = '../comandes';
+        $comandaId = uniqid('comanda_', true); 
+
         if (!is_dir($comandesDir)) {
             mkdir($comandesDir, 0755, true);
         }
 
         $comandaData = [
+            'id' => $comandaId, 
             'username' => $currentClientUsername,
             'fecha' => $fecha,
             'preuSenseIVA' => $preuSenseIVA,
@@ -96,6 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="ca">

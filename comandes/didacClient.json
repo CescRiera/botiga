@@ -1,10 +1,27 @@
 {
+    "id": "comanda_67880cc44aad01.10073061",
     "username": "didacClient",
-    "fecha": "2025-01-15 20:04",
-    "preuSenseIVA": 12,
-    "valorIVA": 1.8,
-    "totalPreu": 13.799999999999999,
+    "fecha": "2025-01-15 20:13",
+    "preuSenseIVA": 36,
+    "valorIVA": 5.4,
+    "totalPreu": 41.4,
     "productes": [
+        {
+            "nom": "tomateMod",
+            "id": "421",
+            "preu": 12,
+            "iva": 15,
+            "disponibilitat": "si",
+            "quantitat": 1
+        },
+        {
+            "nom": "tomateMod",
+            "id": "421",
+            "preu": 12,
+            "iva": 15,
+            "disponibilitat": "si",
+            "quantitat": 1
+        },
         {
             "nom": "tomateMod",
             "id": "421",
