@@ -243,6 +243,23 @@ function obtenerComandaPorUsuario($username) {
     return cargarComanda($username);
 }
 
+function borrarComanda($username) {
+    $filePath = __DIR__ . "/../../comandes/{$username}.json";
+
+    // Verificar si el archivo existe
+    if (file_exists($filePath)) {
+        // Intentar borrar el archivo
+        if (unlink($filePath)) {
+            echo "La comanda del usuario '{$username}' ha sido eliminada correctamente.";
+        } else {
+            throw new Exception("No se pudo eliminar la comanda del usuario '{$username}'. Verifica los permisos del sistema.");
+        }
+    } else {
+        echo "No se encontró ninguna comanda para el usuario '{$username}'.";
+    }
+}
+
+
 
 
 

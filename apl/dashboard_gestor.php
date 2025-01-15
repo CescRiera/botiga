@@ -273,7 +273,7 @@ function mostrarCestas($clientsDelGestor) {
                     
                     <h3>Comanda ID: <?= htmlspecialchars($cesta["id"]) ?></h3>
                     <h3>Comanda Tramitada? <?= htmlspecialchars($cesta["tramitada"] ? "Sí" : "No") ?></h3>
-                    <h3>Comanda Finalitzada? <?= htmlspecialchars($cesta["tramitada"] ? "Sí" : "No") ?> Quan es finalitzi la comanda ja no apareixera</h3>
+                    <h3>Comanda Finalitzada? <?= htmlspecialchars($cesta["finalizada"] ? "Sí" : "No") ?> (Quan es finalitzi la comanda ja no apareixera)</h3>
                     
 
                     <ul>

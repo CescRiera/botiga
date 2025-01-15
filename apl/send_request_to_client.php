@@ -20,7 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_request'])) {
     if ($accion === 'Tramitar Comanda') {
         $claveActualizar = 'tramitada';
     } elseif ($accion === 'Finalitzar Comanda') {
-        $claveActualizar = 'finalizada';
+        borrarComanda($username);
+    }elseif ($accion === 'Rebutjar Comanda') {
+        borrarComanda($username);
     }
 
     // Si hay una clave que actualizar
@@ -59,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_request'])) {
         // Contenido del correo
         $mail->isHTML(true);
         $mail->Subject = $subject;
-        $mail->Body = "<p><strong>Missatge del Gestor:</strong> $gestor amb correu $gestorcorreu</p> <p>$message</p>";
+        $mail->Body = "<p><strong>Missatge del Gestor:</strong> $gestor amb correu $gestorcorreu per al cient: $username</p> <p>$message</p>";
         $mail->AltBody = "Missatge de: $gestor\n\n$message";
 
         // Enviar el correo
