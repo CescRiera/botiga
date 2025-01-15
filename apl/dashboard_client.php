@@ -18,6 +18,21 @@ $valorIVA = 0.00;
 $totalPreu = 0.00;
 $fecha = date("Y-m-d H:i");
 
+$cistellesDir = '../cistelles';
+if ($currentClientUsername && is_dir($cistellesDir)) {
+    $jsonFilePath = "$cistellesDir/{$currentClientUsername}.json";
+    if (file_exists($jsonFilePath)) {
+        $cistellaData = json_decode(file_get_contents($jsonFilePath), true);
+        if ($cistellaData) {
+            $cistella = $cistellaData['productes'] ?? [];
+            $preuSenseIVA = $cistellaData['preuSenseIVA'] ?? 0.00;
+            $valorIVA = $cistellaData['valorIVA'] ?? 0.00;
+            $totalPreu = $cistellaData['totalPreu'] ?? 0.00;
+            $fecha = $cistellaData['fecha'] ?? $fecha;
+        }
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['quantitats'])) {
     foreach ($_POST['quantitats'] as $producteId => $quantitat) {
         $quantitat = max(0, intval($quantitat));
@@ -34,19 +49,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['quantitats'])) {
     }
 
     $_SESSION['cistella'] = $cistella;
+
+    if ($currentClientUsername && !empty($cistella)) {
+        $cistellaData = [
+            'username' => $currentClientUsername,
+            'fecha' => $fecha,
+            'preuSenseIVA' => $preuSenseIVA,
+            'valorIVA' => $valorIVA,
+            'totalPreu' => $totalPreu,
+            'productes' => $cistella,
+        ];
+
+        if (!is_dir($cistellesDir)) {
+            mkdir($cistellesDir, 0755, true);
+        }
+
+        $jsonFilePath = "$cistellesDir/{$currentClientUsername}.json";
+        file_put_contents($jsonFilePath, json_encode($cistellaData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    }
 }
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     if ($_POST['action'] === 'confirm_purchase') {
-        // Procesar la compra confirmada
         $message = "Compra confirmada! Gràcies per la teva compra.";
-        $_SESSION['cistella'] = []; // Vaciar la cistella después de confirmar
+        $_SESSION['cistella'] = []; 
+        unlink($jsonFilePath); 
     } elseif ($_POST['action'] === 'show_confirmation') {
         $showConfirmation = true;
     }
 }
 
-?>
 
+?>
 
 <!DOCTYPE html>
 <html lang="ca">
@@ -112,7 +146,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         <p style="color: red;">No s'han trobat dades personals per al client actual.</p>
     <?php endif; ?>
 
-    <!-- Llistar Productes -->
     <h2>Llistar Productes</h2>
     <form method="post" action="">
         <div id="llista-productes" style="margin-top: 20px;">

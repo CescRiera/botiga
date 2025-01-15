@@ -1,0 +1,25 @@
+{
+    "username": "didacClient",
+    "fecha": "2025-01-15 19:53",
+    "preuSenseIVA": 126,
+    "valorIVA": 18.9,
+    "totalPreu": 144.9,
+    "productes": [
+        {
+            "nom": "tomateMod",
+            "id": "421",
+            "preu": 12,
+            "iva": 15,
+            "disponibilitat": "si",
+            "quantitat": 1
+        },
+        {
+            "nom": "tomateMod",
+            "id": "421",
+            "preu": 12,
+            "iva": 15,
+            "disponibilitat": "si",
+            "quantitat": 2
+        }
+    ]
+}
